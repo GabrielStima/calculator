@@ -1,0 +1,17 @@
+.view {
+  width: calc(100vw - 1em);
+  height: 30vh;
+  background-color: white;
+  color: black;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 0 1em 0 0;
+}
+
+.view p {
+  font-size: larger;
+  font-weight: 600;
+  margin: 0.5rem;
+}

@@ -3,7 +3,7 @@ import HistoryIcon from "@material-ui/icons/History";
 import "../assets/header.css";
 import ComponentHistory from "./componentHistory";
 
-export default function Header() {
+export default function ComponentHeader() {
   const [openHistory, setOpenHistory] = React.useState(false);
 
   function closeHistory(data) {
@@ -12,14 +12,16 @@ export default function Header() {
 
   return (
     <div className="header-body">
-      <div>
+      <div className="history-wrap">
         <HistoryIcon
           className="history-icon"
           onClick={() => setOpenHistory(!openHistory)}
         />
         <ComponentHistory open={openHistory} close={closeHistory} />
       </div>
-      <div>Calculator App</div>
+      <div>
+        <div className="app-title">Calculator App</div>
+      </div>
     </div>
   );
 }

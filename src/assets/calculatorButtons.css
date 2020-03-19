@@ -1,0 +1,26 @@
+.container {
+  width: 100vw;
+  margin: auto 0;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  width: 100%;
+}
+
+.grid-item {
+  font-size: larger;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.grid-item:hover {
+  background-color: rgba(211, 211, 211, 0.1);
+}
+
+.key-zero {
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
