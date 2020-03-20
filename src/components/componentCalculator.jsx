@@ -1,10 +1,11 @@
 import React from "react";
 import ComponentCalculatorView from "./componentCalculatorView";
-import ComponentCalculatorButtons from "./componentCalculatorButtons";
+import ComponentCalculatorKeyboard from "./componentCalculatorKeyboard";
 
 export default function ComponentCalculator() {
-  const [calcText, setCalcText] = React.useState("1 + 1");
-  const [resultText, setResultText] = React.useState("= 2");
+  const [calcText, setCalcText] = React.useState("0");
+  const [resultText, setResultText] = React.useState("0");
+  const [isFinish, setIsFinish] = React.useState(false);
 
   function sendNumber(data) {
     console.log("sendNumber", data);
@@ -19,13 +20,17 @@ export default function ComponentCalculator() {
   }
 
   function finishOperation(data) {
-    console.log("finishOperation", data);
+    setIsFinish(data);
   }
 
   return (
     <>
-      <ComponentCalculatorView calc={calcText} result={resultText} />
-      <ComponentCalculatorButtons
+      <ComponentCalculatorView
+        calc={calcText}
+        result={resultText}
+        finishCalc={isFinish}
+      />
+      <ComponentCalculatorKeyboard
         callbackSendNumber={sendNumber}
         callbackSendOperator={sendOperator}
         callbackSendSpecialFunction={sendSpecialFunction}

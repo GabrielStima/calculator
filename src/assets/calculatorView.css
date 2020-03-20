@@ -10,8 +10,13 @@
   padding: 0 1em 0 0;
 }
 
-.view p {
-  font-size: larger;
+.step-default {
+  font-size: 2rem;
   font-weight: 600;
   margin: 0.5rem;
+  transition: font-size 0.5s;
+}
+
+.zoom-step {
+  font-size: 3rem;
 }
