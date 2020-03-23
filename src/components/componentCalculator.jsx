@@ -64,10 +64,35 @@ export default function ComponentCalculator() {
     });
   }
 
-  function deleteLast() {
-    let temp = objCalc;
+  function handleRulesDeleteLast() {
+    
+  }
 
-    console.log("temp", temp);
+  function deleteLastWrap() {
+    let temp = objCalc;
+    let temp2 = [
+      {},
+      {},
+      {},
+    ]
+
+    temp2.map(t=>{
+
+    })
+
+    // switch (true) {
+    //   case temp.numbers[temp.numbers.length-1].length > 1:
+        
+    //     break;
+    //   case temp.numbers[temp.numbers.length-1].length === 1:
+        
+    //       break;
+    //   case temp.numbers[temp.numbers.length-1].length > 1:
+        
+    //       break;
+    //   default:
+    //     break;
+    // }
 
     setObjCalct(prevState => {
       return { ...prevState, ...temp };
@@ -77,7 +102,7 @@ export default function ComponentCalculator() {
   function sendSpecialFunction(data) {
     switch (data) {
       case "DeleteLast":
-        deleteLast();
+        deleteLastWrap();
         break;
       case "DeleteAll":
         deleteAll();
@@ -91,7 +116,7 @@ export default function ComponentCalculator() {
   function finishOperation(data) {
     setIsFinish(data);
   }
-
+,
   return (
     <>
       <ComponentCalculatorView calc={objCalc} finishCalc={isFinish} />
