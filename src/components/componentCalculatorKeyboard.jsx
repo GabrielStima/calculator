@@ -13,7 +13,7 @@ export default function ComponentCalculatorKeyboard({
     {
       value: "DeleteAll",
       callbackFunction: callbackSendSpecialFunction,
-      text: "C",
+      text: "AC",
       cssClass: "",
       finishOperation: callbackFinishOperation
     },

@@ -12,7 +12,10 @@ export default function ComponentCalculator() {
   const [isFinish, setIsFinish] = React.useState(false);
 
   function shouldChange() {
-    return objCalc.numbers[objCalc.numbers.length - 1] === 0;
+    return (
+      objCalc.numbers[objCalc.numbers.length - 1] === 0 ||
+      objCalc.numbers[objCalc.numbers.length - 1] === "0"
+    );
   }
 
   function sendNumber(data) {
@@ -67,43 +70,66 @@ export default function ComponentCalculator() {
   function ruleStrLengthGreaterThanOne() {
     const temp = objCalc;
     let lastStr = temp.numbers[temp.numbers.length - 1];
-    lastStr = lastStr.split('');
+    lastStr = lastStr.split("");
     lastStr.length -= 1;
-    lastStr = lastStr.join('');
+    lastStr = lastStr.join("");
     temp.numbers[temp.numbers.length - 1] = lastStr;
-    setObjCalct(prevState => {
-      return { ...prevState, ...temp };
-    });
+    temp.result = calculatorService(
+      temp.result,
+      temp.numbers[temp.numbers.length - 1],
+      temp.operations[temp.operations.length - 1]
+    );
+    return temp;
   }
 
   function ruleStrLengthEqualsThanOne() {
-    
+    const temp = objCalc;
+    temp.result = calculatorService(
+      temp.result,
+      temp.numbers[temp.numbers.length - 1],
+      "-"
+    );
+    temp.numbers[temp.numbers.length - 1] = "0";
+    return temp;
   }
 
   function ruleStrEqualsThanZero() {
-    
+    const temp = objCalc;
+
+    if (temp.numbers.length >= 2) {
+      temp.numbers.length -= 1;
+      temp.operations.length -= 1;
+
+      temp.result = calculatorService(
+        temp.result,
+        temp.numbers[temp.numbers.length - 1],
+        temp.operations[temp.operations.length - 1]
+      );
+    }
+
+    return temp;
   }
 
-
   function handleRulesDeleteLast() {
-    let lastItem = objCalc.numbers[temp.numbers.length-1];
+    let lastItem = `${objCalc.numbers[objCalc.numbers.length - 1]}`;
 
     switch (true) {
       case lastItem.length > 1:
-        return ruleStrLengthGreaterThanOne()
+        return ruleStrLengthGreaterThanOne();
+      case lastItem.length === 1 && lastItem === "0":
+        return ruleStrEqualsThanZero();
       case lastItem.length === 1:
-          return ruleStrLengthEqualsThanOne()
-      case lastItem.length === 1 && lastItem === '0':
-          return ruleStrEqualsThanZero()
+        return ruleStrLengthEqualsThanOne();
       default:
-        alert('Rule not registered')
+        console.log("last", lastItem);
+        alert("Rule not registered");
         break;
     }
   }
 
   function deleteLastWrap() {
-    const temp = handleRulesDeleteLast()
-    
+    const temp = handleRulesDeleteLast();
+    console.log("deleteLastWrap", temp);
     setObjCalct(prevState => {
       return { ...prevState, ...temp };
     });
@@ -126,7 +152,7 @@ export default function ComponentCalculator() {
   function finishOperation(data) {
     setIsFinish(data);
   }
-,
+
   return (
     <>
       <ComponentCalculatorView calc={objCalc} finishCalc={isFinish} />
