@@ -4,10 +4,10 @@ export default function ComponentCalculatorView(props) {
   return (
     <div className="view">
       <p className={`step-default ${!props.finishCalc && "zoom-step"}`}>
-        {props.calc}
+        {props.calc.numbers[props.calc.numbers.length - 1]}
       </p>
       <p className={`step-default ${props.finishCalc && "zoom-step"}`}>
-        {props.result}
+        {props.calc.result}
       </p>
     </div>
   );
