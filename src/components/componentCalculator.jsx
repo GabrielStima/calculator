@@ -64,36 +64,46 @@ export default function ComponentCalculator() {
     });
   }
 
-  function handleRulesDeleteLast() {
+  function ruleStrLengthGreaterThanOne() {
+    const temp = objCalc;
+    let lastStr = temp.numbers[temp.numbers.length - 1];
+    lastStr = lastStr.split('');
+    lastStr.length -= 1;
+    lastStr = lastStr.join('');
+    temp.numbers[temp.numbers.length - 1] = lastStr;
+    setObjCalct(prevState => {
+      return { ...prevState, ...temp };
+    });
+  }
+
+  function ruleStrLengthEqualsThanOne() {
     
   }
 
+  function ruleStrEqualsThanZero() {
+    
+  }
+
+
+  function handleRulesDeleteLast() {
+    let lastItem = objCalc.numbers[temp.numbers.length-1];
+
+    switch (true) {
+      case lastItem.length > 1:
+        return ruleStrLengthGreaterThanOne()
+      case lastItem.length === 1:
+          return ruleStrLengthEqualsThanOne()
+      case lastItem.length === 1 && lastItem === '0':
+          return ruleStrEqualsThanZero()
+      default:
+        alert('Rule not registered')
+        break;
+    }
+  }
+
   function deleteLastWrap() {
-    let temp = objCalc;
-    let temp2 = [
-      {},
-      {},
-      {},
-    ]
-
-    temp2.map(t=>{
-
-    })
-
-    // switch (true) {
-    //   case temp.numbers[temp.numbers.length-1].length > 1:
-        
-    //     break;
-    //   case temp.numbers[temp.numbers.length-1].length === 1:
-        
-    //       break;
-    //   case temp.numbers[temp.numbers.length-1].length > 1:
-        
-    //       break;
-    //   default:
-    //     break;
-    // }
-
+    const temp = handleRulesDeleteLast()
+    
     setObjCalct(prevState => {
       return { ...prevState, ...temp };
     });
