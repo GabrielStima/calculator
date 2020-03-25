@@ -27,13 +27,13 @@ export default function ComponentCalculator() {
         objCalcTemp.numbers[objCalcTemp.numbers.length - 1]
       }${data}`;
     }
-
+    console.log("objCalcTemp antes result", objCalcTemp);
     objCalcTemp.result = calculatorService(
       objCalcTemp.result,
       objCalcTemp.numbers[objCalc.numbers.length - 1],
       objCalcTemp.operations[objCalc.operations.length - 1]
     );
-
+    console.log("objCalcTemp dps result", objCalcTemp);
     setObjCalct(prevState => {
       return { ...prevState, ...objCalcTemp };
     });

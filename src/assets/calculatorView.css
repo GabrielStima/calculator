@@ -1,6 +1,6 @@
 .view {
   width: calc(100vw - 1em);
-  height: 30vh;
+  height: 23vh;
   background-color: white;
   color: black;
   display: flex;
@@ -19,8 +19,10 @@
   display: flex;
   justify-content: flex-end;
   transition: font-size 0.5s;
+  color: rgb(134, 134, 134);
 }
 
 .zoom-step {
   font-size: 3rem;
+  color: black;
 }
