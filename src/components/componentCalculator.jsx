@@ -20,7 +20,7 @@ export default function ComponentCalculator() {
 
   function sendNumber(data) {
     let objCalcTemp = objCalc;
-    if (shouldChange()) {
+    if (shouldChange() && data !== ".") {
       objCalcTemp.numbers[objCalcTemp.numbers.length - 1] = data;
     } else {
       objCalcTemp.numbers[objCalcTemp.numbers.length - 1] = `${
@@ -92,7 +92,6 @@ export default function ComponentCalculator() {
     temp.numbers[temp.numbers.length - 1] = "0";
     return temp;
   }
-
   function ruleStrEqualsThanZero() {
     const temp = objCalc;
 
@@ -129,7 +128,6 @@ export default function ComponentCalculator() {
 
   function deleteLastWrap() {
     const temp = handleRulesDeleteLast();
-    console.log("deleteLastWrap", temp);
     setObjCalct(prevState => {
       return { ...prevState, ...temp };
     });

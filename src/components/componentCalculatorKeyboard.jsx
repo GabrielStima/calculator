@@ -131,7 +131,7 @@ export default function ComponentCalculatorKeyboard({
     },
     {
       value: ".",
-      callbackFunction: "",
+      callbackFunction: callbackSendNumber,
       text: ".",
       cssClass: "",
       finishOperation: callbackFinishOperation

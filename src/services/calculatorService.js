@@ -6,28 +6,38 @@ const operations = [
   { operation: "%", functionOperation: percentCalc }
 ];
 
+function convertStrForFloat(data) {
+  return parseFloat(data);
+}
+
 function additionCalc(tempResult, curretnNumber) {
-  return parseInt(tempResult) + parseInt(curretnNumber);
+  return convertStrForFloat(tempResult) + convertStrForFloat(curretnNumber);
 }
 
 function subtractionCalc(tempResult, curretnNumber) {
-  return parseInt(tempResult) - parseInt(curretnNumber);
+  return convertStrForFloat(tempResult) - convertStrForFloat(curretnNumber);
 }
 
 function multiplicationCalc(tempResult, curretnNumber) {
-  return parseInt(tempResult) * parseInt(curretnNumber);
+  return convertStrForFloat(tempResult) * convertStrForFloat(curretnNumber);
 }
 
 function divisionCalc(tempResult, curretnNumber) {
-  return parseInt(tempResult) / parseInt(curretnNumber);
+  return convertStrForFloat(tempResult) / convertStrForFloat(curretnNumber);
 }
 
 function percentCalc(tempResult, curretnNumber) {
-  return (parseInt(tempResult) / 100) * parseInt(curretnNumber);
+  return (
+    (convertStrForFloat(tempResult) / 100) * convertStrForFloat(curretnNumber)
+  );
 }
 
-function rulesForPercentCalc(currentNumber, tempResult, operationItem) {
-  if (parseInt(currentNumber) === 0) {
+function rulesForDontExecuteFuncWithZero(
+  currentNumber,
+  tempResult,
+  operationItem
+) {
+  if (convertStrForFloat(currentNumber) === 0) {
     return tempResult;
   } else {
     return operationItem.functionOperation(tempResult, currentNumber);
@@ -39,10 +49,18 @@ function calculatorService(tempResult, currentNumber, currentOperation) {
 
   operations.filter(operationItem => {
     if (operationItem.operation === currentOperation) {
-      if (currentOperation !== "%") {
-        resp = operationItem.functionOperation(tempResult, currentNumber);
+      if (
+        currentOperation === "%" ||
+        currentOperation === "/" ||
+        currentOperation === "*"
+      ) {
+        resp = rulesForDontExecuteFuncWithZero(
+          currentNumber,
+          tempResult,
+          operationItem
+        );
       } else {
-        resp = rulesForPercentCalc(currentNumber, tempResult, operationItem);
+        resp = operationItem.functionOperation(tempResult, currentNumber);
       }
     } else if (!currentOperation) {
       resp = currentNumber;
