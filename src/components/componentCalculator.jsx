@@ -12,7 +12,7 @@ export default function ComponentCalculator() {
   });
   const [isFinish, setIsFinish] = React.useState(false);
   const [isPercent, setIsPercent] = React.useState(false);
-  const [tempResultPercent, setTempResultPercent] = React.useState(0);
+  const [tempResult, setTempResult] = React.useState(0);
 
   function shouldChange() {
     return (
@@ -22,18 +22,18 @@ export default function ComponentCalculator() {
   }
 
   function ruleForPercentageOperation(lastNumber, lastOperation) {
-    return calculatorService(tempResultPercent, lastNumber, lastOperation);
+    return calculatorService(tempResult, lastNumber, lastOperation);
   }
 
   function reduceForLastNumber(number) {
     let str = number;
     str = str.split("");
     str.length -= 1;
-    str = str.join();
+    str = str.join("");
     return str;
   }
 
-  function reduceForCorrectResult(objCalcTemp) {
+  function convertForCorrectResult(objCalcTemp) {
     const reverseOperation = [
       { currentOperator: "+", reverseOperator: "-" },
       { currentOperator: "-", reverseOperator: "+" },
@@ -69,7 +69,7 @@ export default function ComponentCalculator() {
       `${objCalcTemp.numbers[objCalcTemp.numbers.length - 1]}`.length > 1 &&
       objCalcTemp.operations[objCalc.operations.length - 1] !== "%"
     ) {
-      objCalcTemp = reduceForCorrectResult(objCalcTemp);
+      objCalcTemp = convertForCorrectResult(objCalcTemp);
     }
     if (!isPercent) {
       objCalcTemp.result = calculatorService(
@@ -108,17 +108,17 @@ export default function ComponentCalculator() {
     setIsPercent(data === "%");
 
     if (data !== "%") {
-      setTempResultPercent(0);
+      setTempResult(0);
     }
   }
 
   useEffect(() => {
     (() => {
-      if (isPercent && tempResultPercent === 0) {
-        setTempResultPercent(objCalc.result);
+      if (isPercent && tempResult === 0) {
+        setTempResult(objCalc.result);
       }
     })();
-  }, [isPercent, objCalc, tempResultPercent]);
+  }, [isPercent, objCalc, tempResult]);
 
   function deleteAll() {
     const inicialCalcState = {
@@ -128,7 +128,7 @@ export default function ComponentCalculator() {
     };
 
     setIsPercent(false);
-    setTempResultPercent(0);
+    setTempResult(0);
     setObjCalct(prevState => {
       return { ...prevState, ...inicialCalcState };
     });

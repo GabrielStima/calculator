@@ -27,9 +27,11 @@ function divisionCalc(tempResult, curretnNumber) {
 }
 
 function percentCalc(tempResult, curretnNumber) {
-  return (
-    (convertStrForFloat(tempResult) / 100) * convertStrForFloat(curretnNumber)
-  );
+  return (convertStrForFloat(tempResult) / 100) * convertStrForFloat(curretnNumber);
+}
+
+function ruleForDivideZero(currentNumber) {
+  return currentNumber === "0" || currentNumber === "0." || currentNumber === 0;
 }
 
 function calculatorService(tempResult, currentNumber, currentOperation) {
@@ -38,6 +40,9 @@ function calculatorService(tempResult, currentNumber, currentOperation) {
   operations.filter(operationItem => {
     if (operationItem.operation === currentOperation) {
       if (currentOperation === "%" && currentNumber === "") {
+        resp = tempResult;
+      } else if (currentOperation === "/" && ruleForDivideZero(currentNumber)) {
+        alert("Can't do opertation");
         resp = tempResult;
       } else {
         resp = operationItem.functionOperation(tempResult, currentNumber);
