@@ -32,38 +32,20 @@ function percentCalc(tempResult, curretnNumber) {
   );
 }
 
-function rulesForDontExecuteFuncWithZero(
-  currentNumber,
-  tempResult,
-  operationItem
-) {
-  if (convertStrForFloat(currentNumber) === 0) {
-    return tempResult;
-  } else {
-    return operationItem.functionOperation(tempResult, currentNumber);
-  }
-}
-
 function calculatorService(tempResult, currentNumber, currentOperation) {
   let resp;
 
   operations.filter(operationItem => {
     if (operationItem.operation === currentOperation) {
-      if (
-        currentOperation === "%" ||
-        currentOperation === "/" ||
-        currentOperation === "*"
-      ) {
-        resp = rulesForDontExecuteFuncWithZero(
-          currentNumber,
-          tempResult,
-          operationItem
-        );
+      if (currentOperation === "%" && currentNumber === "") {
+        resp = tempResult;
       } else {
         resp = operationItem.functionOperation(tempResult, currentNumber);
       }
-    } else if (!currentOperation) {
+    } else if (!currentOperation && currentNumber !== "") {
       resp = currentNumber;
+    } else if (currentNumber === "") {
+      resp = tempResult;
     }
   });
 

@@ -25,6 +25,37 @@ export default function ComponentCalculator() {
     return calculatorService(tempResultPercent, lastNumber, lastOperation);
   }
 
+  function reduceForLastNumber(number) {
+    let str = number;
+    str = str.split("");
+    str.length -= 1;
+    str = str.join();
+    return str;
+  }
+
+  function reduceForCorrectResult(objCalcTemp) {
+    const reverseOperation = [
+      { currentOperator: "+", reverseOperator: "-" },
+      { currentOperator: "-", reverseOperator: "+" },
+      { currentOperator: "*", reverseOperator: "/" },
+      { currentOperator: "/", reverseOperator: "*" }
+    ];
+
+    let objResult = objCalcTemp;
+
+    reverseOperation.filter(reverseOpe => {
+      if (reverseOpe.currentOperator === objCalcTemp.operations[objCalc.operations.length - 1]) {
+        objResult.result = calculatorService(
+          objResult.result,
+          reduceForLastNumber(`${objResult.numbers[objResult.numbers.length - 1]}`),
+          reverseOpe.reverseOperator
+        );
+      }
+    });
+
+    return objResult;
+  }
+
   function sendNumber(data) {
     let objCalcTemp = objCalc;
     if (shouldChange() && data !== ".") {
@@ -34,7 +65,12 @@ export default function ComponentCalculator() {
         objCalcTemp.numbers[objCalcTemp.numbers.length - 1]
       }${data}`;
     }
-
+    if (
+      `${objCalcTemp.numbers[objCalcTemp.numbers.length - 1]}`.length > 1 &&
+      objCalcTemp.operations[objCalc.operations.length - 1] !== "%"
+    ) {
+      objCalcTemp = reduceForCorrectResult(objCalcTemp);
+    }
     if (!isPercent) {
       objCalcTemp.result = calculatorService(
         objCalcTemp.result,
@@ -57,7 +93,7 @@ export default function ComponentCalculator() {
     let objCalcTemp = objCalc;
 
     objCalcTemp.operations.push(data);
-    objCalcTemp.numbers.push(0);
+    objCalcTemp.numbers.push("");
 
     objCalcTemp.result = calculatorService(
       objCalcTemp.result,
@@ -105,22 +141,38 @@ export default function ComponentCalculator() {
     lastStr.length -= 1;
     lastStr = lastStr.join("");
     temp.numbers[temp.numbers.length - 1] = lastStr;
-    temp.result = calculatorService(
-      temp.result,
-      temp.numbers[temp.numbers.length - 1],
-      temp.operations[temp.operations.length - 1]
-    );
+
+    if (!isPercent) {
+      temp.result = calculatorService(
+        temp.result,
+        temp.numbers[temp.numbers.length - 1],
+        temp.operations[temp.operations.length - 1]
+      );
+    } else {
+      temp.result = ruleForPercentageOperation(
+        temp.numbers[temp.numbers.length - 1],
+        temp.operations[temp.operations.length - 1]
+      );
+    }
+
     return temp;
   }
 
   function ruleStrLengthEqualsThanOne() {
     const temp = objCalc;
-    temp.result = calculatorService(
-      temp.result,
-      temp.numbers[temp.numbers.length - 1],
-      "-"
-    );
-    temp.numbers[temp.numbers.length - 1] = "0";
+
+    if (!isPercent) {
+      temp.result = calculatorService(temp.result, temp.numbers[temp.numbers.length - 1], "-");
+      temp.numbers[temp.numbers.length - 1] = "0";
+    } else {
+      temp.numbers[temp.numbers.length - 1] = "0";
+
+      temp.result = ruleForPercentageOperation(
+        temp.numbers[temp.numbers.length - 1],
+        temp.operations[temp.operations.length - 1]
+      );
+    }
+
     return temp;
   }
   function ruleStrEqualsThanZero() {
