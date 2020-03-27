@@ -2,6 +2,7 @@ import React from "react";
 import calculatorService from "../services/calculatorService";
 import ComponentCalculatorView from "./componentCalculatorView";
 import ComponentCalculatorKeyboard from "./componentCalculatorKeyboard";
+import { useEffect } from "react";
 
 export default function ComponentCalculator() {
   const [objCalc, setObjCalct] = React.useState({
@@ -10,12 +11,18 @@ export default function ComponentCalculator() {
     result: 0
   });
   const [isFinish, setIsFinish] = React.useState(false);
+  const [isPercent, setIsPercent] = React.useState(false);
+  const [tempResultPercent, setTempResultPercent] = React.useState(0);
 
   function shouldChange() {
     return (
       objCalc.numbers[objCalc.numbers.length - 1] === 0 ||
       objCalc.numbers[objCalc.numbers.length - 1] === "0"
     );
+  }
+
+  function ruleForPercentageOperation(lastNumber, lastOperation) {
+    return calculatorService(tempResultPercent, lastNumber, lastOperation);
   }
 
   function sendNumber(data) {
@@ -27,13 +34,20 @@ export default function ComponentCalculator() {
         objCalcTemp.numbers[objCalcTemp.numbers.length - 1]
       }${data}`;
     }
-    console.log("objCalcTemp antes result", objCalcTemp);
-    objCalcTemp.result = calculatorService(
-      objCalcTemp.result,
-      objCalcTemp.numbers[objCalc.numbers.length - 1],
-      objCalcTemp.operations[objCalc.operations.length - 1]
-    );
-    console.log("objCalcTemp dps result", objCalcTemp);
+
+    if (!isPercent) {
+      objCalcTemp.result = calculatorService(
+        objCalcTemp.result,
+        objCalcTemp.numbers[objCalc.numbers.length - 1],
+        objCalcTemp.operations[objCalc.operations.length - 1]
+      );
+    } else {
+      objCalcTemp.result = ruleForPercentageOperation(
+        objCalcTemp.numbers[objCalc.numbers.length - 1],
+        objCalcTemp.operations[objCalc.operations.length - 1]
+      );
+    }
+
     setObjCalct(prevState => {
       return { ...prevState, ...objCalcTemp };
     });
@@ -41,6 +55,7 @@ export default function ComponentCalculator() {
 
   function sendOperator(data) {
     let objCalcTemp = objCalc;
+
     objCalcTemp.operations.push(data);
     objCalcTemp.numbers.push(0);
 
@@ -53,7 +68,21 @@ export default function ComponentCalculator() {
     setObjCalct(prevState => {
       return { ...prevState, ...objCalcTemp };
     });
+
+    setIsPercent(data === "%");
+
+    if (data !== "%") {
+      setTempResultPercent(0);
+    }
   }
+
+  useEffect(() => {
+    (() => {
+      if (isPercent && tempResultPercent === 0) {
+        setTempResultPercent(objCalc.result);
+      }
+    })();
+  }, [isPercent, objCalc, tempResultPercent]);
 
   function deleteAll() {
     const inicialCalcState = {
@@ -62,6 +91,8 @@ export default function ComponentCalculator() {
       result: 0
     };
 
+    setIsPercent(false);
+    setTempResultPercent(0);
     setObjCalct(prevState => {
       return { ...prevState, ...inicialCalcState };
     });
