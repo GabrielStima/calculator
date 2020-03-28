@@ -42,7 +42,6 @@ function calculatorService(tempResult, currentNumber, currentOperation) {
       if (currentOperation === "%" && currentNumber === "") {
         resp = tempResult;
       } else if (currentOperation === "/" && ruleForDivideZero(currentNumber)) {
-        alert("Can't do opertation");
         resp = tempResult;
       } else {
         resp = operationItem.functionOperation(tempResult, currentNumber);

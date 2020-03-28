@@ -14,10 +14,11 @@ export default function ComponentCalculator() {
   const [isPercent, setIsPercent] = React.useState(false);
   const [tempResult, setTempResult] = React.useState(0);
 
-  function shouldChange() {
+  function shouldChange(data) {
     return (
-      objCalc.numbers[objCalc.numbers.length - 1] === 0 ||
-      objCalc.numbers[objCalc.numbers.length - 1] === "0"
+      (objCalc.numbers[objCalc.numbers.length - 1] === 0 ||
+        objCalc.numbers[objCalc.numbers.length - 1] === "0") &&
+      data !== "."
     );
   }
 
@@ -56,19 +57,41 @@ export default function ComponentCalculator() {
     return objResult;
   }
 
+  function shouldConvertForCorrectResult(objCalcTemp) {
+    let result;
+    const lastNumber = `${objCalcTemp.numbers[objCalcTemp.numbers.length - 1]}`;
+    const lastOperation = objCalcTemp.operations[objCalcTemp.operations.length - 1];
+
+    if (lastNumber.length > 1 && lastOperation !== "%" && lastOperation !== "/") {
+      let splitText = lastNumber.split("");
+      splitText = splitText[splitText.length - 1];
+      result = splitText !== ".";
+    } else {
+      result = false;
+    }
+
+    return result;
+  }
+
+  function shouldAddZero(data, lastItemArrayNumber) {
+    return data === "." && lastItemArrayNumber === "";
+  }
+
   function sendNumber(data) {
     let objCalcTemp = objCalc;
-    if (shouldChange() && data !== ".") {
+    if (shouldChange(data)) {
       objCalcTemp.numbers[objCalcTemp.numbers.length - 1] = data;
     } else {
-      objCalcTemp.numbers[objCalcTemp.numbers.length - 1] = `${
-        objCalcTemp.numbers[objCalcTemp.numbers.length - 1]
-      }${data}`;
+      if (!shouldAddZero(data, objCalcTemp.numbers[objCalcTemp.numbers.length - 1])) {
+        objCalcTemp.numbers[objCalcTemp.numbers.length - 1] = `${
+          objCalcTemp.numbers[objCalcTemp.numbers.length - 1]
+        }${data}`;
+      } else {
+        objCalcTemp.numbers[objCalcTemp.numbers.length - 1] = `0${data}`;
+      }
     }
-    if (
-      `${objCalcTemp.numbers[objCalcTemp.numbers.length - 1]}`.length > 1 &&
-      objCalcTemp.operations[objCalc.operations.length - 1] !== "%"
-    ) {
+
+    if (shouldConvertForCorrectResult(objCalcTemp)) {
       objCalcTemp = convertForCorrectResult(objCalcTemp);
     }
     if (!isPercent) {
