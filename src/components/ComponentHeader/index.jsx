@@ -1,14 +1,10 @@
 import React from "react";
+import "./styles.css";
 import HistoryIcon from "@material-ui/icons/History";
-import "../assets/header.css";
-import ComponentHistory from "./componentHistory";
+import ComponentHistory from "../ComponentHistory";
 
-export default function ComponentHeader() {
+const ComponentHeader = () => {
   const [openHistory, setOpenHistory] = React.useState(false);
-
-  function closeHistory(data) {
-    setOpenHistory(data);
-  }
 
   return (
     <div className="header-body">
@@ -17,11 +13,13 @@ export default function ComponentHeader() {
           className="history-icon"
           onClick={() => setOpenHistory(!openHistory)}
         />
-        <ComponentHistory open={openHistory} close={closeHistory} />
+        <ComponentHistory open={openHistory} close={setOpenHistory} />
       </div>
       <div>
         <div className="app-title">Calculator App</div>
       </div>
     </div>
   );
-}
+};
+
+export default ComponentHeader;

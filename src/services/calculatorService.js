@@ -1,51 +1,51 @@
+import { additionCalc } from "./additionService";
+import { subtractionCalc } from "./subtractionService";
+import { multiplicationCalc } from "./multiplicationService";
+import { divisionCalc } from "./divisionService";
+import { percentCalc } from "./percentService";
+
 const operations = [
   { operation: "+", functionOperation: additionCalc },
   { operation: "-", functionOperation: subtractionCalc },
   { operation: "*", functionOperation: multiplicationCalc },
   { operation: "/", functionOperation: divisionCalc },
-  { operation: "%", functionOperation: percentCalc }
+  { operation: "%", functionOperation: percentCalc },
 ];
 
-function convertStrForFloat(data) {
-  return parseFloat(data);
-}
-
-function additionCalc(tempResult, curretnNumber) {
-  return convertStrForFloat(tempResult) + convertStrForFloat(curretnNumber);
-}
-
-function subtractionCalc(tempResult, curretnNumber) {
-  return convertStrForFloat(tempResult) - convertStrForFloat(curretnNumber);
-}
-
-function multiplicationCalc(tempResult, curretnNumber) {
-  return convertStrForFloat(tempResult) * convertStrForFloat(curretnNumber);
-}
-
-function divisionCalc(tempResult, curretnNumber) {
-  return convertStrForFloat(tempResult) / convertStrForFloat(curretnNumber);
-}
-
-function percentCalc(tempResult, curretnNumber) {
-  return (convertStrForFloat(tempResult) / 100) * convertStrForFloat(curretnNumber);
-}
-
-function ruleForDivideZero(currentNumber) {
+const ruleForDivideZero = (currentNumber) => {
   return currentNumber === "0" || currentNumber === "0." || currentNumber === 0;
-}
+};
 
-function calculatorService(tempResult, currentNumber, currentOperation) {
+const calculatorService = (tempResult, currentNumber, currentOperation) => {
   let resp;
 
-  operations.filter(operationItem => {
+  const rulesForOperation = (
+    operationItem,
+    tempResult,
+    currentNumber,
+    currentOperation
+  ) => {
+    let result;
+
+    if (currentOperation === "%" && currentNumber === "") {
+      result = tempResult;
+    } else if (currentOperation === "/" && ruleForDivideZero(currentNumber)) {
+      result = tempResult;
+    } else {
+      result = operationItem.functionOperation(tempResult, currentNumber);
+    }
+
+    return result;
+  };
+
+  operations.filter((operationItem) => {
     if (operationItem.operation === currentOperation) {
-      if (currentOperation === "%" && currentNumber === "") {
-        resp = tempResult;
-      } else if (currentOperation === "/" && ruleForDivideZero(currentNumber)) {
-        resp = tempResult;
-      } else {
-        resp = operationItem.functionOperation(tempResult, currentNumber);
-      }
+      resp = rulesForOperation(
+        operationItem,
+        tempResult,
+        currentNumber,
+        currentOperation
+      );
     } else if (!currentOperation && currentNumber !== "") {
       resp = currentNumber;
     } else if (currentNumber === "") {
@@ -54,6 +54,6 @@ function calculatorService(tempResult, currentNumber, currentOperation) {
   });
 
   return resp;
-}
+};
 
 export default calculatorService;

@@ -1,7 +1,7 @@
 import React from "react";
-import ComponentHeader from "./components/componentHeader";
-import ComponentCalculator from "./components/componentCalculator";
-import "./assets/App.css";
+import ComponentHeader from "./components/ComponentHeader";
+import ComponentCalculator from "./components/ComponentCalculator";
+import "./assets/css/App.css";
 
 function App() {
   return (

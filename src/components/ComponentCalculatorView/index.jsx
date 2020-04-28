@@ -1,6 +1,6 @@
 import React from "react";
-import "../assets/calculatorView.css";
-export default function ComponentCalculatorView(props) {
+import "./styles.css";
+const ComponentCalculatorView = (props) => {
   return (
     <div className="view">
       <p className={`step-default ${!props.finishCalc && "zoom-step"}`}>
@@ -15,4 +15,6 @@ export default function ComponentCalculatorView(props) {
       </p>
     </div>
   );
-}
+};
+
+export default ComponentCalculatorView;

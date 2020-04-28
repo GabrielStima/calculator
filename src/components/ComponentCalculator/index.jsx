@@ -1,14 +1,14 @@
 import React from "react";
-import calculatorService from "../services/calculatorService";
-import ComponentCalculatorView from "./componentCalculatorView";
-import ComponentCalculatorKeyboard from "./componentCalculatorKeyboard";
+import calculatorService from "../../services/calculatorService";
+import ComponentCalculatorView from "../ComponentCalculatorView";
+import ComponentCalculatorKeyboard from "../ComponentCalculatorKeyboard";
 import { useEffect } from "react";
 
-export default function ComponentCalculator() {
+const ComponentCalculator = () => {
   const [objCalc, setObjCalct] = React.useState({
     numbers: [0],
     operations: [],
-    result: 0
+    result: 0,
   });
   const [isFinish, setIsFinish] = React.useState(false);
   const [isPercent, setIsPercent] = React.useState(false);
@@ -39,16 +39,21 @@ export default function ComponentCalculator() {
       { currentOperator: "+", reverseOperator: "-" },
       { currentOperator: "-", reverseOperator: "+" },
       { currentOperator: "*", reverseOperator: "/" },
-      { currentOperator: "/", reverseOperator: "*" }
+      { currentOperator: "/", reverseOperator: "*" },
     ];
 
     let objResult = objCalcTemp;
 
-    reverseOperation.filter(reverseOpe => {
-      if (reverseOpe.currentOperator === objCalcTemp.operations[objCalc.operations.length - 1]) {
+    reverseOperation.filter((reverseOpe) => {
+      if (
+        reverseOpe.currentOperator ===
+        objCalcTemp.operations[objCalc.operations.length - 1]
+      ) {
         objResult.result = calculatorService(
           objResult.result,
-          reduceForLastNumber(`${objResult.numbers[objResult.numbers.length - 1]}`),
+          reduceForLastNumber(
+            `${objResult.numbers[objResult.numbers.length - 1]}`
+          ),
           reverseOpe.reverseOperator
         );
       }
@@ -60,9 +65,14 @@ export default function ComponentCalculator() {
   function shouldConvertForCorrectResult(objCalcTemp) {
     let result;
     const lastNumber = `${objCalcTemp.numbers[objCalcTemp.numbers.length - 1]}`;
-    const lastOperation = objCalcTemp.operations[objCalcTemp.operations.length - 1];
+    const lastOperation =
+      objCalcTemp.operations[objCalcTemp.operations.length - 1];
 
-    if (lastNumber.length > 1 && lastOperation !== "%" && lastOperation !== "/") {
+    if (
+      lastNumber.length > 1 &&
+      lastOperation !== "%" &&
+      lastOperation !== "/"
+    ) {
       let splitText = lastNumber.split("");
       splitText = splitText[splitText.length - 1];
       result = splitText !== ".";
@@ -82,7 +92,12 @@ export default function ComponentCalculator() {
     if (shouldChange(data)) {
       objCalcTemp.numbers[objCalcTemp.numbers.length - 1] = data;
     } else {
-      if (!shouldAddZero(data, objCalcTemp.numbers[objCalcTemp.numbers.length - 1])) {
+      if (
+        !shouldAddZero(
+          data,
+          objCalcTemp.numbers[objCalcTemp.numbers.length - 1]
+        )
+      ) {
         objCalcTemp.numbers[objCalcTemp.numbers.length - 1] = `${
           objCalcTemp.numbers[objCalcTemp.numbers.length - 1]
         }${data}`;
@@ -107,7 +122,7 @@ export default function ComponentCalculator() {
       );
     }
 
-    setObjCalct(prevState => {
+    setObjCalct((prevState) => {
       return { ...prevState, ...objCalcTemp };
     });
   }
@@ -124,7 +139,7 @@ export default function ComponentCalculator() {
       objCalcTemp.operations[objCalc.operations.length - 1]
     );
 
-    setObjCalct(prevState => {
+    setObjCalct((prevState) => {
       return { ...prevState, ...objCalcTemp };
     });
 
@@ -147,12 +162,12 @@ export default function ComponentCalculator() {
     const inicialCalcState = {
       numbers: [0],
       operations: [],
-      result: 0
+      result: 0,
     };
 
     setIsPercent(false);
     setTempResult(0);
-    setObjCalct(prevState => {
+    setObjCalct((prevState) => {
       return { ...prevState, ...inicialCalcState };
     });
   }
@@ -185,7 +200,11 @@ export default function ComponentCalculator() {
     const temp = objCalc;
 
     if (!isPercent) {
-      temp.result = calculatorService(temp.result, temp.numbers[temp.numbers.length - 1], "-");
+      temp.result = calculatorService(
+        temp.result,
+        temp.numbers[temp.numbers.length - 1],
+        "-"
+      );
       temp.numbers[temp.numbers.length - 1] = "0";
     } else {
       temp.numbers[temp.numbers.length - 1] = "0";
@@ -234,7 +253,7 @@ export default function ComponentCalculator() {
 
   function deleteLastWrap() {
     const temp = handleRulesDeleteLast();
-    setObjCalct(prevState => {
+    setObjCalct((prevState) => {
       return { ...prevState, ...temp };
     });
   }
@@ -268,4 +287,6 @@ export default function ComponentCalculator() {
       />
     </>
   );
-}
+};
+
+export default ComponentCalculator;
