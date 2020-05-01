@@ -16,27 +16,27 @@ const ruleForDivideZero = (currentNumber) => {
   return currentNumber === "0" || currentNumber === "0." || currentNumber === 0;
 };
 
+const rulesForOperation = (
+  operationItem,
+  tempResult,
+  currentNumber,
+  currentOperation
+) => {
+  let result;
+
+  if (currentOperation === "%" && currentNumber === "") {
+    result = tempResult;
+  } else if (currentOperation === "/" && ruleForDivideZero(currentNumber)) {
+    result = tempResult;
+  } else {
+    result = operationItem.functionOperation(tempResult, currentNumber);
+  }
+
+  return result;
+};
+
 const calculatorService = (tempResult, currentNumber, currentOperation) => {
   let resp;
-
-  const rulesForOperation = (
-    operationItem,
-    tempResult,
-    currentNumber,
-    currentOperation
-  ) => {
-    let result;
-
-    if (currentOperation === "%" && currentNumber === "") {
-      result = tempResult;
-    } else if (currentOperation === "/" && ruleForDivideZero(currentNumber)) {
-      result = tempResult;
-    } else {
-      result = operationItem.functionOperation(tempResult, currentNumber);
-    }
-
-    return result;
-  };
 
   operations.filter((operationItem) => {
     if (operationItem.operation === currentOperation) {
