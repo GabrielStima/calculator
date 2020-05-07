@@ -1,6 +1,7 @@
 # Calculator
 
 Idea from [here](https://github.com/florinpop17/app-ideas)
+Demo [CodeSandbox](https://codesandbox.io/embed/black-brook-4vcdj?fontsize=14&hidenavigation=1&theme=dark)
 
 ### Project in progress
 
